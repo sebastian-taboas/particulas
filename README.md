@@ -71,8 +71,8 @@ Isto ábrenos o visor de _less_ que é un pouco raro e non nos deixa facer moita
 
 Podemos corrixir de varias maneiras, modificar o comentario (1), desfacer os últimos commit (2) e finalmente restaurar a versión (3)
 (1) `git commit --amend` onde modificamos tal cal o texto que nos aparece e logo para gardar e saír facemos `ESC -> : -> wq` e podemos verificar o cambio imprimindo o log
-(2) `git reset HEAD~n` onde _n_ é o número de commits en orde que desfacemos (desfacemos os últimos n commits). O reset ten variacións segundo como queremos que opere que son a soft, mixed and hard que se integran como `... reset -soft...`
-(3) `git restore archivo` para que o noso arquivo na área de traballo sexa a versión do último commit gardado, así se anteriormente fixemos un reset podemos restaurar unha versión antiga
+(2) `git reset HEAD~n` onde _n_ é o número de commits en orde que desfacemos (desfacemos os últimos n commits). O reset ten variacións segundo como queremos que opere que son a soft, mixed and hard que se integran como `... reset --soft...`
+(3) `git restore archivo` para que o noso arquivo na área de traballo sexa a versión do último commit gardado, así se anteriormente fixemos un reset podemos restaurar a versión antiga dese commit recuperado no reset
 
 
 ## Traballo en pólas
@@ -92,9 +92,38 @@ git remote add origin https://github.com/sebastian-taboas/particulas.git
 git branch -M main
 git push -u origin main
 ```
-A segunda liña é importante se non teño unha póla que se chame _main_, de feito ao estar facendo isto a miña póla principal chámase _master_
+A segunda liña é importante se non teño unha póla que se chame _main_, de feito ao estar facendo isto a miña póla principal chámase _master_. Unha vez feito isto as seguintes veces que queira actualizar a rama principal basta con que faga `git push` e o _main_ en GitHub sobreescríbese co que teño en local, se, e só se, o remoto non ten commits que eu non teña. Normalmente non imos estar simplemente actualizando o main porque podería ser problemático, polo que tamén subimos as pólas
+```
+git switch novo_branch
+git push -u origin novo_branch
+```
+Logo podemos actulizar póla a póla facendo simplemente `git push` ao ubicarnos con `git switch branch` na póla que queiramos. Logo, se en vez de ir dunha nunha queremos subilas todas á vez e chimpún utilizamos `git push --all origin`. Aquí pode aparecer un conflicto de exitencias de pólas segundo o repositorio (local ou na nube) e para determinar adecuadamente a ubicación de cada branch podemos facer
+* `git branch` para os locais
+* `git branch -r` para os remotos (na nube)
+* `git branch -a` para todos en xeral (all)
+
+O contrario a facer push é facer pull. Cando quero actualizar unha póla local coa versión que está na nube colócome no branch que quero e fago un pull (hai que ir individualmente, pero normalmente trabállase nunha soa póla á vez)
+```
+git switch branch
+git pull
+```
+Hai un comando un pouco raro que ten que ver con isto que é `git fetch` que o que fai é só descargar a información da nube ao local pero non actualizala. De feito un pull é algo como primeiro facer un fetch e logo un merge. O git fetch pode ser útil se queremos ver os cambios en xerais, por exemplo 
+```
+git fetch --all
+git status
+```
+E así imprímenos a información e nos dirá que na nube pois certa póla ten n+k commits mentra que eu teño só n commits. A póla só se actualiza ao facer o pull.
+
+Finalmente en GitHub está a opción de facer Pull Request que serve para solicitar unha fusión de pólas e que a xente mire as modificacións entre o que estaba na nube e meu último push e vexan se está correcto e así aceptalo.
+
+Non esquezamos tampouco o `git clone url` que me permite descargar o repositorio de alguén no meu local, algo parecido a un primeiro pull
+
+## Resolución de conflictos
+
+Supostamente haberá un momento no que haxa conflictos porque cada un sube versións incompatibles e terase que escoller que liñas conservar e cales desbotar. Parecido ao pull request
 
 
+## Outras cousas
 Se quero ver os procesos activos de git, semellante con calquera exe, podo usar
 ```
 tasklist | findstr git
@@ -103,6 +132,14 @@ para logo  se  teño algún proceso que quedou en erro (o cal xa me pasou dúas 
 ```
 del .git\index.lock
 ```
+
+
+Tamén hai unha cousa que é 
+```
+git log --oneline --graph --all
+```
+que me amosa moi visualmente todos os commits por pólas que se fixeron na nube
+
 
 Arquivos como os `ipynb_checkpoints` non interesa gardalos e temos que facer que entren no gitignore. Para facer meter algo nun gitignore facemos
 ```
