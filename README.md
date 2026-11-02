@@ -14,7 +14,7 @@ code .
 Agora abrimos a terminal en VSC e abrimos o directorio. En xeral pde ser máis sinxelo traballar dende o prompt de conda
 ```cd .\directorio```
 
-Podemos ver os arquivos que hai no directorio con `ls` coas opcións
+Podemos ver os arquivos que hai no directorio con `ls` coas opcións. Se usamos conda (eu) poñemos `dir /a` (/a é para arquivos ocultos)
 ```
 ls -Attributes 
 ls -Directory 
@@ -23,8 +23,8 @@ ls -Hidden
 ls -ReadOnly
 ls -System
 ```
-Para incluír o noso repositorio en git poñemos na terminal 
 
+Para incluír o noso repositorio en git poñemos na terminal 
 ```
 git init
 ls -Hidden
